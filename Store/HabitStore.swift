@@ -16,21 +16,21 @@ class HabitStore: ObservableObject {
                 name: "Exercise",
                 icon: "🏃",
                 myHistory: HabitStore.realisticHistory(completionRate: 0.7),
-                partner: darma,
+                partner: morad,
                 partnerHistory: HabitStore.realisticHistory(completionRate: 0.55)
             ),
             HabitBoard(
                 name: "Read a book",
                 icon: "📚",
                 myHistory: HabitStore.realisticHistory(completionRate: 0.6),
-                partner: alice,
+                partner: morad,
                 partnerHistory: HabitStore.realisticHistory(completionRate: 0.8)
             ),
             HabitBoard(
                 name: "Journal",
                 icon: "✏️",
                 myHistory: HabitStore.realisticHistory(completionRate: 0.5),
-                partner: bob,
+                partner: morad,
                 partnerHistory: HabitStore.realisticHistory(completionRate: 0.45)
             )
         ]
