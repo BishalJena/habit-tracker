@@ -1,17 +1,18 @@
 //
-//  MyBaliAppApp.swift
-//  MyBaliApp
-//
-//  Created by Ivan on 03/03/26.
+//  MainApp.swift
+//  Contacts
 //
 
 import SwiftUI
 
 @main
 struct MainApp: App {
+    @StateObject private var habitStore = HabitStore()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(habitStore)
         }
     }
 }

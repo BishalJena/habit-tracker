@@ -5,89 +5,154 @@
 
 import SwiftUI
 
-// MARK: - Habit Card View
+// MARK: - Main Card
 struct HabitCardView: View {
     let habit: HabitBoard
+    @EnvironmentObject private var store: HabitStore
 
-    /// Pairs each activityHistory entry with its real calendar date.
-    /// History[0] = oldest day, History[last] = today.
-    var days: [(date: Date, intensity: Int)] {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+
+            // ── Habit name ──
+            Text(habit.name.lowercased())
+                .font(.system(size: 30, weight: .bold))
+                .foregroundColor(.primary)
+                .padding(.bottom, 14)
+
+            // ── My row ──
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .center) {
+                    Text("you")
+                        .font(.system(size: 12, weight: .regular))
+                        .foregroundColor(.secondary)
+
+                    Spacer()
+
+                    // Check-in button
+                    Button {
+                        store.checkIn(habitId: habit.id)
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: habit.todayCheckedIn ? "checkmark.circle.fill" : "circle")
+                                .font(.system(size: 13))
+                            Text(habit.todayCheckedIn ? "Done" : "Check in")
+                                .font(.system(size: 12, weight: .semibold))
+                        }
+                        .foregroundColor(habit.todayCheckedIn ? .green : .white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            habit.todayCheckedIn
+                                ? Color.green.opacity(0.12)
+                                : Color.black
+                        )
+                        .clipShape(Capsule())
+                        .overlay(
+                            Capsule()
+                                .stroke(habit.todayCheckedIn ? Color.green.opacity(0.3) : Color.clear, lineWidth: 1)
+                        )
+                    }
+                    .disabled(habit.todayCheckedIn)
+                    .animation(.easeInOut(duration: 0.2), value: habit.todayCheckedIn)
+                }
+
+                HabitCirclesRow(history: habit.myHistory)
+            }
+
+            // ── Partner row (only when a partner is linked) ──
+            if let partner = habit.partner {
+                Divider()
+                    .padding(.vertical, 12)
+
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(.blue.opacity(0.12))
+                            .frame(width: 18, height: 18)
+                            .overlay {
+                                Text(partner.firstName.prefix(1).uppercased())
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(.blue)
+                            }
+
+                        Text(partner.firstName.lowercased())
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundColor(.secondary)
+                    }
+
+                    HabitCirclesRow(history: habit.partnerHistory)
+                }
+            }
+        }
+        .padding(.vertical, 20)
+    }
+}
+
+// MARK: - Shared Day Circle Row
+struct HabitCirclesRow: View {
+    let history: [Int]
+
+    private var days: [(date: Date, intensity: Int)] {
         let calendar = Calendar.current
         let today = Date()
-        let count = habit.activityHistory.count
-        return habit.activityHistory.enumerated().map { index, intensity in
-            let daysAgo = count - 1 - index
+        return history.enumerated().map { index, intensity in
+            let daysAgo = history.count - 1 - index
             let date = calendar.date(byAdding: .day, value: -daysAgo, to: today) ?? today
             return (date: date, intensity: intensity)
         }
     }
 
-    /// Groups days by month so we can show a month header when the month changes.
-    var groupedByMonth: [(monthLabel: String, days: [(date: Date, intensity: Int)])] {
-        var groups: [(String, [(Date, Int)])] = []
-        var currentMonth = ""
+    /// Groups consecutive days by month label.
+    private var groupedByMonth: [(label: String, days: [(date: Date, intensity: Int)])] {
+        var result: [(String, [(Date, Int)])] = []
+        var currentLabel = ""
         var currentGroup: [(Date, Int)] = []
 
         for day in days {
             let label = monthString(for: day.date)
-            if label != currentMonth {
-                if !currentGroup.isEmpty {
-                    groups.append((currentMonth, currentGroup))
-                }
-                currentMonth = label
+            if label != currentLabel {
+                if !currentGroup.isEmpty { result.append((currentLabel, currentGroup)) }
+                currentLabel = label
                 currentGroup = [(day.date, day.intensity)]
             } else {
                 currentGroup.append((day.date, day.intensity))
             }
         }
-        if !currentGroup.isEmpty {
-            groups.append((currentMonth, currentGroup))
-        }
-        return groups.map { ($0.0, $0.1.map { (date: $0.0, intensity: $0.1) }) }
+        if !currentGroup.isEmpty { result.append((currentLabel, currentGroup)) }
+        return result.map { ($0.0, $0.1.map { (date: $0.0, intensity: $0.1) }) }
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            // Habit name — large, bold, lowercase
-            Text(habit.name.lowercased())
-                .font(.system(size: 30, weight: .bold))
-                .foregroundColor(.primary)
-                .padding(.bottom, 2)
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .top, spacing: 0) {
+                    ForEach(groupedByMonth, id: \.label) { group in
+                        VStack(alignment: .leading, spacing: 6) {
+                            // Month label
+                            Text(group.label)
+                                .font(.system(size: 11, weight: .regular))
+                                .foregroundColor(.secondary)
+                                .padding(.leading, 2)
 
-            ScrollViewReader { proxy in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(alignment: .top, spacing: 0) {
-                        ForEach(groupedByMonth, id: \.monthLabel) { group in
-                            VStack(alignment: .leading, spacing: 6) {
-                                // Month label
-                                Text(group.monthLabel)
-                                    .font(.system(size: 12, weight: .regular))
-                                    .foregroundColor(.secondary)
-                                    .padding(.leading, 4)
-
-                                // Day circles row
-                                HStack(spacing: 8) {
-                                    ForEach(group.days.indices, id: \.self) { i in
-                                        let day = group.days[i]
-                                        DayCircle(date: day.date, intensity: day.intensity)
-                                            .id(day.date)
-                                    }
+                            HStack(spacing: 8) {
+                                ForEach(group.days.indices, id: \.self) { i in
+                                    let day = group.days[i]
+                                    DayCircle(date: day.date, intensity: day.intensity)
+                                        .id(day.date)
                                 }
                             }
-                            .padding(.trailing, 16)
                         }
+                        .padding(.trailing, 16)
                     }
-                    .padding(.horizontal, 2)
                 }
-                .onAppear {
-                    // Scroll to show today on load
-                    if let today = days.last?.date {
-                        proxy.scrollTo(today, anchor: .trailing)
-                    }
+                .padding(.horizontal, 2)
+            }
+            .onAppear {
+                if let today = days.last?.date {
+                    proxy.scrollTo(today, anchor: .trailing)
                 }
             }
         }
-        .padding(.vertical, 16)
     }
 
     private func monthString(for date: Date) -> String {
@@ -106,7 +171,6 @@ struct DayCircle: View {
         "\(Calendar.current.component(.day, from: date))"
     }
 
-    /// Single-letter weekday (M / T / W …)
     private var dayLetter: String {
         let f = DateFormatter()
         f.dateFormat = "EEEEE"
@@ -153,7 +217,14 @@ struct DayCircle: View {
 #Preview {
     ZStack {
         Color(UIColor.systemBackground).ignoresSafeArea()
-        HabitCardView(habit: mockHabits[1])
-            .padding(.horizontal)
+        HabitCardView(habit: HabitBoard(
+            name: "Exercise",
+            icon: "🏃",
+            myHistory: (0..<140).map { _ in Int.random(in: 0...1) },
+            partner: darma,
+            partnerHistory: (0..<140).map { _ in Int.random(in: 0...1) }
+        ))
+        .environmentObject(HabitStore())
+        .padding(.horizontal, 24)
     }
 }

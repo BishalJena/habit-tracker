@@ -6,10 +6,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+
     @State private var contacts = mockContacts
     @State private var searchText = ""
-    
+    @State private var selectedContact: Contact? = nil
+
     // MARK: - Filtered Contacts
     var filteredContacts: [Contact] {
         if searchText.isEmpty {
@@ -21,16 +22,16 @@ struct ContentView: View {
             }
         }
     }
-    
+
     // MARK: - Grouped
     var groupedContacts: [String: [Contact]] {
         Dictionary(grouping: filteredContacts) { $0.firstLetter }
     }
-    
+
     var sectionTitles: [String] {
         groupedContacts.keys.sorted()
     }
-    
+
     var body: some View {
         TabView {
             // TAB 1: Contacts
@@ -41,8 +42,13 @@ struct ContentView: View {
                             Section(key) {
                                 ForEach(groupedContacts[key] ?? []) { contact in
                                     ContactRow(contact: contact)
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            selectedContact = contact
+                                        }
                                 }
                             }
+                            .listSectionSeparator(.hidden, edges: .bottom)
                             .id(key)
                         }
                     }
@@ -63,10 +69,13 @@ struct ContentView: View {
                     )
                 }
             }
+            .sheet(item: $selectedContact) { contact in
+                CreateHabitView(partner: contact)
+            }
             .tabItem {
                 Label("Contacts", systemImage: "person.2.fill")
             }
-            
+
             // TAB 2: Boards
             BoardsView()
                 .tabItem {
@@ -80,9 +89,9 @@ struct ContentView: View {
 struct IndexBar: View {
     let letters: [String]
     let onSelect: (String) -> Void
-    
+
     @State private var draggedLetter: String? = nil
-    
+
     var body: some View {
         GeometryReader { geo in
             VStack(spacing: 1) {
@@ -128,13 +137,13 @@ struct IndexBar: View {
 // MARK: - Contact Row
 struct ContactRow: View {
     let contact: Contact
-    
+
     var initials: String {
         let first = contact.firstName.prefix(1)
         let last = contact.lastName.prefix(1)
         return "\(first)\(last)"
     }
-    
+
     var body: some View {
         HStack(spacing: 12) {
             Circle()
@@ -145,22 +154,28 @@ struct ContactRow: View {
                         .font(.subheadline.bold())
                         .foregroundStyle(.blue)
                 }
-            
+
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(contact.firstName) \(contact.lastName)")
                     .font(.body)
-                
+
                 Text("Mobile")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             Spacer()
+
+            // Hint chevron
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundStyle(.tertiary)
         }
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(HabitStore())
 }
 
 // MARK: - Helpers

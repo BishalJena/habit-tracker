@@ -6,35 +6,41 @@
 import SwiftUI
 
 struct HabitBoard: Identifiable {
-    let id = UUID()
+    let id: UUID
     var name: String
     var icon: String
-    var themeColor: Color
-    
-    // 0 = empty, 1 = light, 2 = medium, 3 = full completion.
-    // 140 days = 20 weeks (7 days * 20 columns)
-    var activityHistory: [Int]
+    var reminderTime: Date?
+
+    // Binary history: 0 = not done, 1 = done.
+    // Index 0 = oldest day, last index = today (140 days total).
+    var myHistory: [Int]
+
+    // Accountability partner + their simulated history.
+    var partner: Contact?
+    var partnerHistory: [Int]
+
+    init(
+        id: UUID = UUID(),
+        name: String,
+        icon: String = "⭐️",
+        reminderTime: Date? = nil,
+        myHistory: [Int] = Array(repeating: 0, count: 140),
+        partner: Contact? = nil,
+        partnerHistory: [Int] = []
+    ) {
+        self.id = id
+        self.name = name
+        self.icon = icon
+        self.reminderTime = reminderTime
+        self.myHistory = myHistory
+        self.partner = partner
+        self.partnerHistory = partnerHistory.isEmpty
+            ? (0..<140).map { _ in Int.random(in: 0...1) }
+            : partnerHistory
+    }
+
+    var todayCheckedIn: Bool { myHistory.last == 1 }
 }
 
-// Mock data to test our UI
-let mockHabits: [HabitBoard] = [
-    HabitBoard(
-        name: "Journal",
-        icon: "✏️",
-        themeColor: .gray,
-        activityHistory: Array(repeating: 0, count: 140)
-    ),
-    HabitBoard(
-        name: "Exercise",
-        icon: "🏃‍♂️",
-        themeColor: .green,
-        // Randomly generating 0 to 3 for the preview
-        activityHistory: (0..<140).map { _ in Int.random(in: 0...3) }
-    ),
-    HabitBoard(
-        name: "Read a book",
-        icon: "📚",
-        themeColor: .green,
-        activityHistory: (0..<140).map { _ in Int.random(in: 0...2) }
-    )
-]
+// Kept only as a fallback so previews compile when the store is empty.
+let mockHabits: [HabitBoard] = []
