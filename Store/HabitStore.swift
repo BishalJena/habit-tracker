@@ -36,10 +36,11 @@ class HabitStore: ObservableObject {
         ]
     }
 
-    // MARK: - Check in for today
+    // MARK: - Toggle today's check-in
     func checkIn(habitId: UUID) {
         guard let i = habits.firstIndex(where: { $0.id == habitId }) else { return }
-        habits[i].myHistory[habits[i].myHistory.count - 1] = 1
+        let last = habits[i].myHistory.count - 1
+        habits[i].myHistory[last] = habits[i].myHistory[last] == 1 ? 0 : 1
     }
 
     // MARK: - Add new habit (created from contact flow)

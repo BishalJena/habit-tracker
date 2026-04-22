@@ -52,7 +52,6 @@ struct HabitCardView: View {
                                 .stroke(habit.todayCheckedIn ? Color.green.opacity(0.3) : Color.clear, lineWidth: 1)
                         )
                     }
-                    .disabled(habit.todayCheckedIn)
                     .animation(.easeInOut(duration: 0.2), value: habit.todayCheckedIn)
                 }
 
