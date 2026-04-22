@@ -123,36 +123,28 @@ struct HabitCirclesRow: View {
     }
 
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .top, spacing: 0) {
-                    ForEach(groupedByMonth, id: \.label) { group in
-                        VStack(alignment: .leading, spacing: 6) {
-                            // Month label
-                            Text(group.label)
-                                .font(.system(size: 11, weight: .regular))
-                                .foregroundColor(.secondary)
-                                .padding(.leading, 2)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .top, spacing: 0) {
+                ForEach(groupedByMonth, id: \.label) { group in
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(group.label)
+                            .font(.system(size: 11, weight: .regular))
+                            .foregroundColor(.secondary)
+                            .padding(.leading, 2)
 
-                            HStack(spacing: 8) {
-                                ForEach(group.days.indices, id: \.self) { i in
-                                    let day = group.days[i]
-                                    DayCircle(date: day.date, intensity: day.intensity)
-                                        .id(day.date)
-                                }
+                        HStack(spacing: 8) {
+                            ForEach(group.days.indices, id: \.self) { i in
+                                let day = group.days[i]
+                                DayCircle(date: day.date, intensity: day.intensity)
                             }
                         }
-                        .padding(.trailing, 16)
                     }
-                }
-                .padding(.horizontal, 2)
-            }
-            .onAppear {
-                if let today = days.last?.date {
-                    proxy.scrollTo(today, anchor: .trailing)
+                    .padding(.trailing, 16)
                 }
             }
+            .padding(.horizontal, 2)
         }
+        .defaultScrollAnchor(.trailing)
     }
 
     private func monthString(for date: Date) -> String {
@@ -221,7 +213,7 @@ struct DayCircle: View {
             name: "Exercise",
             icon: "🏃",
             myHistory: (0..<140).map { _ in Int.random(in: 0...1) },
-            partner: darma,
+            partner: morad,
             partnerHistory: (0..<140).map { _ in Int.random(in: 0...1) }
         ))
         .environmentObject(HabitStore())
