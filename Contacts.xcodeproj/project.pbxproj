@@ -14,6 +14,8 @@
 		B29DAC582F9860B900910606 /* HabitCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DAC572F9860B600910606 /* HabitCardView.swift */; };
 		B29DAC5A2F9862DC00910606 /* HabitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DAC592F9862D800910606 /* HabitModel.swift */; };
 		B29DAC5C2F9862F600910606 /* BoardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DAC5B2F9862F300910606 /* BoardsView.swift */; };
+		AA000001000000000000AAA1 /* HabitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AAA0 /* HabitStore.swift */; };
+		AA000001000000000000AAA3 /* CreateHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000AAA2 /* CreateHabitView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		B29DAC572F9860B600910606 /* HabitCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCardView.swift; sourceTree = "<group>"; };
 		B29DAC592F9862D800910606 /* HabitModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitModel.swift; sourceTree = "<group>"; };
 		B29DAC5B2F9862F300910606 /* BoardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsView.swift; sourceTree = "<group>"; };
+		AA000001000000000000AAA0 /* HabitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitStore.swift; sourceTree = "<group>"; };
+		AA000001000000000000AAA2 /* CreateHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -56,6 +60,8 @@
 				B29DAC592F9862D800910606 /* HabitModel.swift */,
 				B29DAC5B2F9862F300910606 /* BoardsView.swift */,
 				B29DAC572F9860B600910606 /* HabitCardView.swift */,
+				AA000001000000000000AAA0 /* HabitStore.swift */,
+				AA000001000000000000AAA2 /* CreateHabitView.swift */,
 				140FFDE12F96FD6600A84BD4 /* MainApp.swift */,
 				1406AE222F98577D0021F052 /* Contacts.app */,
 			);
@@ -143,6 +149,8 @@
 				140FFDE22F96FD6900A84BD4 /* MainApp.swift in Sources */,
 				B29DAC5C2F9862F600910606 /* BoardsView.swift in Sources */,
 				140FFDDE2F96FD4C00A84BD4 /* ContentView.swift in Sources */,
+				AA000001000000000000AAA1 /* HabitStore.swift in Sources */,
+				AA000001000000000000AAA3 /* CreateHabitView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
