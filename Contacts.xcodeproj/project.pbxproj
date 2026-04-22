@@ -10,7 +10,7 @@
 		140FFDDE2F96FD4C00A84BD4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140FFDDD2F96FD4C00A84BD4 /* ContentView.swift */; };
 		140FFDE22F96FD6900A84BD4 /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140FFDE12F96FD6600A84BD4 /* MainApp.swift */; };
 		140FFDE42F96FE2400A84BD4 /* ModelContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140FFDE32F96FE2400A84BD4 /* ModelContact.swift */; };
-		B29DAC562F9860A300910606 /* ModelHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DAC552F98609E00910606 /* ModelHabit.swift */; };
+
 		B29DAC582F9860B900910606 /* HabitCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DAC572F9860B600910606 /* HabitCardView.swift */; };
 		B29DAC5A2F9862DC00910606 /* HabitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DAC592F9862D800910606 /* HabitModel.swift */; };
 		B29DAC5C2F9862F600910606 /* BoardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DAC5B2F9862F300910606 /* BoardsView.swift */; };
@@ -23,7 +23,7 @@
 		140FFDDD2F96FD4C00A84BD4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		140FFDE12F96FD6600A84BD4 /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
 		140FFDE32F96FE2400A84BD4 /* ModelContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContact.swift; sourceTree = "<group>"; };
-		B29DAC552F98609E00910606 /* ModelHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelHabit.swift; sourceTree = "<group>"; };
+
 		B29DAC572F9860B600910606 /* HabitCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCardView.swift; sourceTree = "<group>"; };
 		B29DAC592F9862D800910606 /* HabitModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitModel.swift; sourceTree = "<group>"; };
 		B29DAC5B2F9862F300910606 /* BoardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsView.swift; sourceTree = "<group>"; };
@@ -54,17 +54,40 @@
 			isa = PBXGroup;
 			children = (
 				14E0E8802F8F2AE500FACC26 /* Contacts */,
-				140FFDDD2F96FD4C00A84BD4 /* ContentView.swift */,
-				140FFDE32F96FE2400A84BD4 /* ModelContact.swift */,
-				B29DAC552F98609E00910606 /* ModelHabit.swift */,
-				B29DAC592F9862D800910606 /* HabitModel.swift */,
-				B29DAC5B2F9862F300910606 /* BoardsView.swift */,
-				B29DAC572F9860B600910606 /* HabitCardView.swift */,
-				AA000001000000000000AAA0 /* HabitStore.swift */,
-				AA000001000000000000AAA2 /* CreateHabitView.swift */,
+				AA000002000000000000BBB1 /* Models */,
+				AA000002000000000000BBB2 /* Store */,
+				AA000002000000000000BBB3 /* Views */,
 				140FFDE12F96FD6600A84BD4 /* MainApp.swift */,
 				1406AE222F98577D0021F052 /* Contacts.app */,
 			);
+			sourceTree = "<group>";
+		};
+		AA000002000000000000BBB1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				140FFDE32F96FE2400A84BD4 /* ModelContact.swift */,
+				B29DAC592F9862D800910606 /* HabitModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AA000002000000000000BBB2 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				AA000001000000000000AAA0 /* HabitStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		AA000002000000000000BBB3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				140FFDDD2F96FD4C00A84BD4 /* ContentView.swift */,
+				B29DAC5B2F9862F300910606 /* BoardsView.swift */,
+				B29DAC572F9860B600910606 /* HabitCardView.swift */,
+				AA000001000000000000AAA2 /* CreateHabitView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,7 +167,6 @@
 			files = (
 				B29DAC5A2F9862DC00910606 /* HabitModel.swift in Sources */,
 				B29DAC582F9860B900910606 /* HabitCardView.swift in Sources */,
-				B29DAC562F9860A300910606 /* ModelHabit.swift in Sources */,
 				140FFDE42F96FE2400A84BD4 /* ModelContact.swift in Sources */,
 				140FFDE22F96FD6900A84BD4 /* MainApp.swift in Sources */,
 				B29DAC5C2F9862F600910606 /* BoardsView.swift in Sources */,
