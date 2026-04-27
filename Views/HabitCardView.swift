@@ -216,6 +216,6 @@ struct DayCircle: View {
             partnerHistory: (0..<140).map { _ in Int.random(in: 0...1) }
         ))
         .environmentObject(HabitStore())
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 0)
     }
 }
